@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DashboardActivity">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#F8F9FA">
+
+        <!-- Top Navigation Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btn_menu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_menu"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Menu"
+                android:scaleType="centerInside"
+                android:tint="@color/text_dark" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_notifications"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_notification"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Notifications"
+                android:scaleType="centerInside"
+                android:tint="@color/text_dark" />
+        </LinearLayout>
+
+        <!-- Scrollable Content -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="20dp">
+
+                <!-- Profile Card -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/gradient_profile_card"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <!-- Profile Image -->
+                        <FrameLayout
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@color/white"
+                            android:layout_marginEnd="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_profile_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="Profile picture"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:id="@+id/layout_profile_placeholder"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/logo"
+                                    android:contentDescription="Profile placeholder"
+                                    android:scaleType="fitCenter" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <!-- Profile Info -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Welcome Back!"
+                                android:textSize="11sp"
+                                android:textColor="#E8F5F0"
+                                android:layout_marginBottom="2dp" />
+
+                            <TextView
+                                android:id="@+id/tv_full_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="John Doe"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:layout_marginBottom="4dp" />
+
+                            <TextView
+                                android:id="@+id/tv_reg_id_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="REG123456"
+                                android:textSize="12sp"
+                                android:textColor="#FFD700"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- Info Cards Grid -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <!-- Row 1: Full Name & ID Number -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:spacing="12dp"
+                        android:layout_marginBottom="12dp">
+
+                        <!-- Full Name Card -->
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient_info_card"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Full Name"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_light"
+                                    android:layout_marginBottom="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_full_name_detail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="John Doe"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_dark"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <!-- ID Number Card -->
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient_info_card"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ID Number"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_light"
+                                    android:layout_marginBottom="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_id_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="12345678"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_dark"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Row 2: County & Mobile -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:spacing="12dp"
+                        android:layout_marginBottom="12dp">
+
+                        <!-- County Card -->
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient_info_card"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="County"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_light"
+                                    android:layout_marginBottom="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_county"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Nairobi"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_dark"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <!-- Mobile Card -->
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient_info_card"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Mobile"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_light"
+                                    android:layout_marginBottom="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_mobile_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="+254712345678"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_dark"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Row 3: Email (Full Width) -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/gradient_info_card"
+                        android:padding="16dp"
+                        android:layout_marginBottom="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Email Address"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_light"
+                                android:layout_marginBottom="6dp" />
+
+                            <TextView
+                                android:id="@+id/tv_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="john@example.com"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_dark"
+                                android:maxLines="1"
+                                android:ellipsize="end" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Action Buttons at Bottom -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:spacing="12dp"
+            android:background="@color/white">
+
+            <!-- Generate ID Button -->
+            <!-- Sign Up Button (Filled Green) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/generate_id"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Generate ID"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primary_green"
+                app:cornerRadius="12dp"
+                app:elevation="0dp" />
+
+            <!-- Edit Profile Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_profile"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Edit Profile"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/primary_green"
+                app:strokeWidth="2dp"
+                app:cornerRadius="12dp"
+                app:elevation="0dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
