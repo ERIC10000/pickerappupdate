@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,9 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".EditProfileActivity">
 
+    <!-- Progress Bar for Loading -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -21,7 +29,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="16dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:elevation="2dp">
 
             <ImageButton
                 android:id="@+id/btn_back"
@@ -31,7 +41,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Back"
                 android:scaleType="centerInside"
-                android:tint="@color/text_dark" />
+                app:tint="@color/text_dark" />
 
             <TextView
                 android:layout_width="0dp"
@@ -41,7 +51,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_dark"
-                android:layout_marginLeft="16dp" />
+                android:layout_marginStart="16dp" />
         </LinearLayout>
 
         <!-- Scrollable Content -->
@@ -49,13 +59,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
                 <!-- Profile Image Section -->
                 <LinearLayout
@@ -63,337 +74,257 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="32dp">
 
-                    <!-- Profile Image -->
                     <FrameLayout
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/gradient_info_card"
-                        android:layout_marginBottom="12dp">
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginBottom="16dp">
 
-                        <ImageView
-                            android:id="@+id/iv_profile_image"
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:contentDescription="Profile picture"
-                            android:visibility="gone" />
-
-                        <LinearLayout
-                            android:id="@+id/layout_profile_placeholder"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            app:cardCornerRadius="60dp"
+                            app:cardElevation="4dp"
+                            app:cardBackgroundColor="#E0E0E0">
 
                             <ImageView
+                                android:id="@+id/iv_profile_image"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/sikolia"
-                                android:contentDescription="Profile placeholder"
-                                android:scaleType="centerCrop" />
-                        </LinearLayout>
+                                android:scaleType="centerCrop"
+                                android:contentDescription="Profile picture"
+                                android:visibility="gone" />
 
-                        <!-- Edit Badge -->
-                        <LinearLayout
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@color/primary_green"
+                            <LinearLayout
+                                android:id="@+id/layout_profile_placeholder"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/logo"
+                                    android:contentDescription="Profile placeholder"
+                                    android:scaleType="centerCrop" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:layout_gravity="bottom|end"
-                            android:layout_marginEnd="-4dp"
-                            android:layout_marginBottom="-4dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            app:cardCornerRadius="18dp"
+                            app:cardBackgroundColor="@color/primary_green"
+                            app:cardElevation="6dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="4dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="✎"
-                                android:textSize="14sp"
-                                android:textColor="@color/white"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_upload"
+                                app:tint="@color/white"
+                                android:scaleType="centerInside"/>
+                        </androidx.cardview.widget.CardView>
                     </FrameLayout>
 
-                    <!-- Change Photo Button -->
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_change_photo"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:paddingHorizontal="16dp"
+                        android:layout_height="40dp"
                         android:text="Change Photo"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_green"
-                        android:background="@drawable/button_outline_green"
-                        android:elevation="0dp"
-                        android:stateListAnimator="@null" />
+                        app:backgroundTint="#E8F5E9"
+                        app:cornerRadius="20dp"
+                        app:elevation="0dp"
+                        android:textAllCaps="false" />
                 </LinearLayout>
 
-                <!-- Form Fields -->
                 <!-- First Name -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="14dp">
+                    android:hint="First Name"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="First Name"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_first_name"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:hint="Enter first name"
-                        android:textSize="14sp"
+                        android:layout_height="wrap_content"
+                        android:text="Jeremy"
+                        android:inputType="textCapWords"
                         android:textColor="@color/text_dark"
-                        android:textColorHint="@color/text_light"
-                        android:inputType="text"
-                        android:maxLines="1" />
-                </LinearLayout>
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Last Name -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="14dp">
+                    android:hint="Last Name"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Last Name"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_last_name"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:hint="Enter last name"
-                        android:textSize="14sp"
+                        android:layout_height="wrap_content"
+                        android:text="Kiprotich"
+                        android:inputType="textCapWords"
                         android:textColor="@color/text_dark"
-                        android:textColorHint="@color/text_light"
-                        android:inputType="text"
-                        android:maxLines="1" />
-                </LinearLayout>
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- ID Number -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="14dp">
+                    android:hint="ID Number"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ID Number"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_id_number"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:hint="Enter ID number"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_dark"
-                        android:textColorHint="@color/text_light"
+                        android:layout_height="wrap_content"
+                        android:text="12345678"
                         android:inputType="number"
-                        android:maxLines="1"
-                        android:typeface="monospace" />
-                </LinearLayout>
+                        android:textColor="@color/text_dark"
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Registration ID -->
-                <LinearLayout
+                <!-- Registration ID (Read Only) -->
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="14dp">
+                    android:hint="Registration ID (Read Only)"
+                    android:layout_marginBottom="16dp"
+                    app:startIconDrawable="@drawable/ic_lock_closed"
+                    app:startIconTint="@color/text_light"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Registration ID"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_reg_id"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:hint="Enter registration ID"
-                        android:textSize="14sp"
+                        android:layout_height="wrap_content"
+                        android:text="REG/KE/NBI/2025/456"
+                        android:inputType="none"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/text_dark"
-                        android:textColorHint="@color/text_light"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:typeface="monospace" />
-                </LinearLayout>
+                        android:alpha="0.6"
+                        android:textSize="16sp"
+                        android:background="#F5F5F5"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Email -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="14dp">
+                    android:hint="Email Address"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Email"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:hint="Enter email address"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_dark"
-                        android:textColorHint="@color/text_light"
+                        android:layout_height="wrap_content"
+                        android:text="jeremy@kenawpwa.org"
                         android:inputType="textEmailAddress"
-                        android:maxLines="1" />
-                </LinearLayout>
+                        android:textColor="@color/text_dark"
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Mobile Number -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="14dp">
+                    android:hint="Mobile Number"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mobile Number"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_mobile_number"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:hint="Enter mobile number"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_dark"
-                        android:textColorHint="@color/text_light"
+                        android:layout_height="wrap_content"
+                        android:text="0712345678"
                         android:inputType="phone"
-                        android:maxLines="1" />
-                </LinearLayout>
+                        android:textColor="@color/text_dark"
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- County Dropdown -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="24dp">
+                    android:hint="County"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="County"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_dark"
-                        android:layout_marginBottom="6dp" />
-
-                    <Spinner
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/spinner_county"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/spinner_background"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="8dp"
-                        android:contentDescription="Select county" />
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray"
-                    android:layout_marginBottom="16dp" />
-
+                        android:layout_height="wrap_content"
+                        android:text="Nairobi"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:textColor="@color/text_dark"
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </ScrollView>
 
-        <!-- Action Buttons at Bottom -->
+        <!-- Bottom Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:spacing="12dp"
-            android:background="@color/white">
+            android:padding="24dp"
+            android:background="@color/white"
+            android:elevation="8dp">
 
-            <!-- Cancel Button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="52dp"
                 android:layout_weight="1"
-                android:text="Cancel"
-                android:textSize="12sp"
+                android:text="Discard"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary_green"
-                android:background="@drawable/button_outline_green"
-                android:elevation="0dp"
-                android:stateListAnimator="@null" />
+                app:strokeColor="@color/primary_green"
+                app:strokeWidth="1dp"
+                app:cornerRadius="12dp"
+                android:layout_marginEnd="8dp"
+                android:letterSpacing="0.03"
+                app:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-            <!-- Save Button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:text="Save Changes"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:background="@drawable/button_solid_green"
-                android:elevation="0dp"
-                android:stateListAnimator="@null" />
+                app:backgroundTint="@color/primary_green"
+                app:cornerRadius="12dp"
+                android:layout_marginStart="8dp"
+                android:letterSpacing="0.03"
+                app:textAllCaps="false" />
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

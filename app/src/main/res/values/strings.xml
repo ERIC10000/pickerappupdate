@@ -1,76 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WasteManage</string>
-    <string name="app_description">Manage waste responsibly and sustainably</string>
+    <string name="app_name">KeNaWPWA</string>
+    <string name="app_description">Powered by MaraTech</string>
+    <string name="powered_by">Powered by MaraTech Inc.</string>
 
-    <!-- Main Activity -->
-    <string name="welcome_title">Welcome to WasteManage</string>
-    <string name="welcome_subtitle">Manage your waste responsibly</string>
-    <string name="quick_actions">Quick Actions</string>
-    <string name="schedule_pickup">Schedule Pickup</string>
-    <string name="report_issue">Report Issue</string>
-    <string name="your_statistics">Your Statistics</string>
-    <string name="recent_pickups">Recent Pickups</string>
-
-    <!-- Statistics -->
-    <string name="pickups_label">Pickups</string>
-    <string name="waste_reduced_label">Waste Reduced</string>
-
-    <!-- Schedule Pickup Activity -->
-    <string name="schedule_pickup_title">Schedule Pickup</string>
-    <string name="select_waste_type">Select Waste Type</string>
-    <string name="organic_waste">Organic Waste</string>
-    <string name="recyclable_materials">Recyclable Materials</string>
-    <string name="inert_waste">Inert Waste</string>
-    <string name="hazardous_waste">Hazardous Waste</string>
-    <string name="select_date">Select Date</string>
-    <string name="date_hint">DD/MM/YYYY</string>
-    <string name="select_time_slot">Select Time Slot</string>
-    <string name="additional_notes">Additional Notes (Optional)</string>
-    <string name="notes_hint">Any special instructions?</string>
-    <string name="confirm_pickup_schedule">Confirm Pickup Schedule</string>
-
-    <!-- Report Issue Activity -->
-    <string name="report_issue_title">Report Issue</string>
-    <string name="issue_type">Issue Type</string>
-    <string name="location_label">Location</string>
-    <string name="location_hint">Enter location or address</string>
-    <string name="issue_description">Issue Description</string>
-    <string name="description_hint">Describe the issue in detail</string>
-    <string name="attach_photo">Attach Photo</string>
-    <string name="choose_photo">Choose Photo</string>
-    <string name="priority_level">Priority Level</string>
-    <string name="priority_low">Low</string>
-    <string name="priority_medium">Medium</string>
-    <string name="priority_high">High</string>
-    <string name="submit_report">Submit Report</string>
-
-    <!-- Bottom Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_schedule">Schedule</string>
-    <string name="nav_history">History</string>
-    <string name="nav_profile">Profile</string>
-
-    <!-- Landing Page -->
-    <string name="landing_title">WasteManage</string>
-    <string name="landing_tagline">Transforming Waste into Sustainability</string>
-    <string name="feature_smart_scheduling">Smart Scheduling</string>
-    <string name="feature_smart_scheduling_desc">Automated pickups</string>
-    <string name="feature_tracking">Real-time Tracking</string>
-    <string name="feature_tracking_desc">Live updates</string>
-    <string name="feature_impact">Impact Tracking</string>
-    <string name="feature_impact_desc">See your impact</string>
-    <string name="feature_rewards">Earn Rewards</string>
-    <string name="feature_rewards_desc">Get incentives</string>
-    <string name="global_impact">Global Impact</string>
-    <string name="users_count">50K+</string>
-    <string name="users_label">Users</string>
-    <string name="kg_managed">1.2M+</string>
-    <string name="kg_label">Kg Managed</string>
-    <string name="recycled_percent">95%</string>
-    <string name="recycled_label">Recycled</string>
-    <string name="green_revolution">Join the Green Revolution</string>
-    <string name="green_revolution_desc">Make a difference in our planet, one waste at a time</string>
-    <string name="btn_get_started">Get Started</string>
-    <string name="btn_learn_more">Learn More</string>
 </resources>

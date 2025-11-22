@@ -7,15 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".LandingActivity">
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/white">
 
-        <!-- Scrollable Content -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -30,67 +27,62 @@
                 android:padding="24dp"
                 android:gravity="center_horizontal">
 
-                <!-- Logo Container with Rounded Green Border -->
                 <FrameLayout
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginBottom="24dp"
-                    android:background="@drawable/logo_container_border_rounded"
-                    android:elevation="8dp">
+                    android:background="@drawable/logo_container_border">
 
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
+                        android:id="@+id/iv_logo"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:src="@drawable/logo"
-                        android:contentDescription="WasteManage Logo"
+                        android:contentDescription="KeNaWPWA Logo"
                         android:scaleType="centerInside" />
                 </FrameLayout>
 
-                <!-- Main Headline -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="KeNaWPWA"
-                    android:textSize="42sp"
+                    android:text="@string/app_name"
+                    android:textSize="32sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary_green"
                     android:textAlignment="center"
                     android:layout_marginBottom="8dp" />
 
-                <!-- Tagline -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Transforming Waste into Sustainability"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_light"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_dark"
                     android:textAlignment="center"
                     android:layout_marginBottom="40dp" />
+
             </LinearLayout>
         </ScrollView>
 
-        <!-- Action Buttons at Bottom -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp"
-            android:paddingBottom="32dp">
+            android:paddingBottom="16dp">
 
-            <!-- Welfare Message for Waste Pickers -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Empowering waste pickers in Kenya with fair wages, safety, and dignity. Join us in creating a sustainable future for all."
+                android:text="Empowering waste pickers in Kenya with fair wages, safety, and dignity."
                 android:textSize="14sp"
                 android:textColor="@color/text_light"
                 android:textAlignment="center"
                 android:layout_marginBottom="24dp"
                 android:lineSpacingExtra="4sp" />
 
-            <!-- Horizontal Layout for Side-by-Side Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,11 +90,10 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="center_horizontal">
 
-                <!-- Sign Up Button (Filled Green) -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_signup"
+                    android:id="@+id/btn_create_account"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="Sign Up"
@@ -113,25 +104,24 @@
                     app:cornerRadius="12dp"
                     app:elevation="0dp" />
 
-                <!-- Log In Button (Outlined Green) -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_login"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="Log In"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary_green"
-                    app:backgroundTint="@android:color/transparent"
+                    app:backgroundTint="@color/white"
                     app:strokeColor="@color/primary_green"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="1dp"
                     app:cornerRadius="12dp"
-                    app:elevation="0dp" />
+                    app:elevation="0dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
             </LinearLayout>
 
-            <!-- Terms and Conditions Link -->
             <TextView
                 android:id="@+id/link_terms"
                 android:layout_width="match_parent"
@@ -140,11 +130,22 @@
                 android:textSize="13sp"
                 android:textColor="@color/text_light"
                 android:textAlignment="center"
-                android:padding="12dp"
+                android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground" />
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/powered_by"
+                android:textSize="12sp"
+                android:textColor="@color/text_light"
+                android:alpha="0.7"
+                android:textStyle="italic"
+                android:gravity="center" />
+
         </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

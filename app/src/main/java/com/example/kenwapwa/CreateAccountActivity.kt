@@ -1,162 +1,221 @@
 package com.example.kenwapwa
 
-
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.storage.Storage
+import io.github.jan.supabase.storage.storage
+import io.github.jan.supabase.storage.upload
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import org.mindrot.jbcrypt.BCrypt
 import java.io.File
 
 class CreateAccountActivity : AppCompatActivity() {
+    // Supabase Client
+    private val supabase = createSupabaseClient(
+        supabaseUrl = "https://gpnkysawiietekujccir.supabase.co",
+        supabaseKey = "sb_publishable_XvU1mb48E8Qpneb8Ps9hmw_9nHbqTGc"
+    ) {
+        install(Postgrest)
+        install(Storage)
+    }
 
-    // 1. Track the current step
+    // Step Tracking
     private var currentStep = 1
+    private var selectedCountyCode: String = ""
+    private lateinit var progressBar: ProgressBar
 
-    // 2. Declare Views
+    // Views
     private lateinit var step1Container: LinearLayout
     private lateinit var step2Container: LinearLayout
     private lateinit var step3Container: LinearLayout
-
     private lateinit var progressStep1: View
     private lateinit var progressStep2: View
     private lateinit var progressStep3: View
-
     private lateinit var btnNext: MaterialButton
     private lateinit var btnBack: MaterialButton
     private lateinit var btnBackArrow: ImageButton
-
-    // Image Upload Views
     private lateinit var btnUploadPhoto: MaterialButton
     private lateinit var ivProfilePreview: ImageView
     private lateinit var layoutUploadPlaceholder: LinearLayout
+    private lateinit var etRegId: TextInputEditText
+    private lateinit var spinnerCountry: AutoCompleteTextView
 
-    // 3. Image Handling Variables
-    private lateinit var imageUri: Uri // Stores the temp URI for camera
-    private var selectedImageUri: Uri? = null // Stores the final URI to use
+    // Image Handling
+    private lateinit var imageUri: Uri
+    private var selectedImageUri: Uri? = null
 
-    // --- RESULT LAUNCHERS ---
-
-    // 1. Launcher for Gallery/Files
+    // Result Launchers
     private val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             selectedImageUri = it
             showImagePreview(it)
         }
     }
-
-    // 2. Launcher for Camera
     private val takePictureResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
         if (isSuccess) {
-            imageUri?.let {
+            imageUri.let {
                 selectedImageUri = it
                 showImagePreview(it)
             }
         }
     }
-
-    // 3. Launcher for Permissions (Camera)
     private val requestCameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        if (isGranted) {
-            launchCamera()
-        } else {
-            Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
-        }
+        if (isGranted) launchCamera()
+        else Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
-
         initViews()
         setupListeners()
         updateUI(1)
+        fetchCounties()
     }
 
     private fun initViews() {
-        // Steps
         step1Container = findViewById(R.id.step1_container)
         step2Container = findViewById(R.id.step2_container)
         step3Container = findViewById(R.id.step3_container)
-
-        // Progress
         progressStep1 = findViewById(R.id.progress_step1)
         progressStep2 = findViewById(R.id.progress_step2)
         progressStep3 = findViewById(R.id.progress_step3)
-
-        // Buttons
         btnNext = findViewById(R.id.btn_next_complete)
         btnBack = findViewById(R.id.btn_previous)
         btnBackArrow = findViewById(R.id.btn_back)
-
-        // Image Views
         btnUploadPhoto = findViewById(R.id.btn_upload_photo)
         ivProfilePreview = findViewById(R.id.iv_profile_preview)
         layoutUploadPlaceholder = findViewById(R.id.layout_upload_placeholder)
+        etRegId = findViewById(R.id.et_reg_id)
+        spinnerCountry = findViewById(R.id.spinner_country)
+        progressBar = findViewById(R.id.progress_bar)
     }
 
     private fun setupListeners() {
-        // --- IMAGE UPLOAD LOGIC ---
-        btnUploadPhoto.setOnClickListener {
-            showImageSourceDialog()
-        }
+        btnUploadPhoto.setOnClickListener { showImageSourceDialog() }
+        layoutUploadPlaceholder.setOnClickListener { showImageSourceDialog() }
+        btnNext.setOnClickListener { handleNextButton() }
+        btnBack.setOnClickListener { if (currentStep > 1) { currentStep--; updateUI(currentStep) } }
+        btnBackArrow.setOnClickListener { if (currentStep > 1) { currentStep--; updateUI(currentStep) } else finish() }
+    }
 
-        // Also allow clicking the placeholder area
-        layoutUploadPlaceholder.setOnClickListener {
-            showImageSourceDialog()
-        }
-
-        // --- NAVIGATION LOGIC ---
-        btnNext.setOnClickListener {
-            when (currentStep) {
-                1 -> if (validateStep1()) { currentStep = 2; updateUI(currentStep) }
-                2 -> if (validateStep2()) { currentStep = 3; updateUI(currentStep) }
-                3 -> {
-                    Toast.makeText(this, "Account Created!", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this, DashboardActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-        }
-
-        btnBack.setOnClickListener {
-            if (currentStep > 1) { currentStep--; updateUI(currentStep) }
-        }
-
-        btnBackArrow.setOnClickListener {
-            if (currentStep > 1) { currentStep--; updateUI(currentStep) } else finish()
+    private fun handleNextButton() {
+        when (currentStep) {
+            1 -> if (validateStep1()) { currentStep = 2; updateUI(currentStep) }
+            2 -> if (validateStep2()) { currentStep = 3; updateUI(currentStep) }
+            3 -> registerUser()
         }
     }
 
-    // --- IMAGE HELPER FUNCTIONS ---
+    private fun registerUser() {
+        progressBar.visibility = View.VISIBLE
+        val firstName = findViewById<TextInputEditText>(R.id.et_first_name).text.toString()
+        val lastName = findViewById<TextInputEditText>(R.id.et_last_name).text.toString()
+        val email = findViewById<TextInputEditText>(R.id.et_email).text.toString()
+        val idNumber = findViewById<TextInputEditText>(R.id.et_id_number).text.toString()
+        val password = findViewById<TextInputEditText>(R.id.et_password).text.toString()
+        val phone = findViewById<TextInputEditText>(R.id.et_phone).text.toString()
+        val county = spinnerCountry.text.toString()
 
-    private fun showImageSourceDialog() {
-        val options = arrayOf("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Upload Profile Picture")
-        builder.setItems(options) { dialog, which ->
-            when (which) {
-                0 -> checkCameraPermissionAndOpen() // Take Photo
-                1 -> selectImageFromGalleryResult.launch("image/*") // Gallery
-                2 -> dialog.dismiss()
+        lifecycleScope.launch {
+            try {
+                val imageUrl = selectedImageUri?.let { uploadImage(it) }
+                val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
+                val regId = generateRegId(selectedCountyCode)
+                val user = WastePicker(
+                    first_name = firstName,
+                    last_name = lastName,
+                    reg_id = regId,
+                    mobile_number = phone,
+                    county = county,
+                    email = email,
+                    id_number = idNumber,
+                    profile_image = imageUrl,
+                    password = hashedPassword
+                )
+                supabase.from("waste_pickers").insert(user)
+                Toast.makeText(this@CreateAccountActivity, "Account Created Redirecting to Login", Toast.LENGTH_LONG).show()
+                startActivity(Intent(this@CreateAccountActivity, LoginActivity::class.java))
+            } catch (e: Exception) {
+                Log.e("CreateAccountActivity", "Registration error", e)
+                Toast.makeText(this@CreateAccountActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                progressBar.visibility = View.GONE
             }
         }
-        builder.show()
+    }
+
+    private suspend fun uploadImage(uri: Uri): String? {
+        return try {
+            val tempFile = File.createTempFile("profile_${System.currentTimeMillis()}", ".jpg", cacheDir)
+            contentResolver.openInputStream(uri)?.use { input ->
+                tempFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            } ?: throw Exception("Failed to create temp file")
+            val imageName = "profile_${System.currentTimeMillis()}.jpg"
+            supabase.storage["profile_images"].upload(
+                path = imageName,
+                file = tempFile,
+                upsert = true
+            )
+            supabase.storage["profile_images"].publicUrl(imageName)
+        } catch (e: Exception) {
+            Log.e("CreateAccountActivity", "Failed to upload image", e)
+            null
+        }
+    }
+
+    private fun fetchCounties() {
+        lifecycleScope.launch {
+            try {
+                val counties = supabase.from("counties").select().decodeList<County>()
+                val countyNames = counties.map { it.name }
+                val adapter = ArrayAdapter(this@CreateAccountActivity, android.R.layout.simple_dropdown_item_1line, countyNames)
+                spinnerCountry.setAdapter(adapter)
+                spinnerCountry.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                    selectedCountyCode = counties[position].code
+                    etRegId.setText(generateRegId(selectedCountyCode))
+                }
+            } catch (e: Exception) {
+                Log.e("CreateAccountActivity", "Failed to fetch counties", e)
+                Toast.makeText(this@CreateAccountActivity, "Failed to fetch counties", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun generateRegId(countyCode: String): String {
+        val uniqueDigits = (1000..9999).random()
+        return "WP/$countyCode/$uniqueDigits"
+    }
+
+    private fun showImageSourceDialog() {
+        val options = arrayOf( "Choose from Gallery", "Cancel")
+        AlertDialog.Builder(this).setTitle("Upload Profile Picture").setItems(options) { _, which ->
+            when (which) {
+                0 -> checkCameraPermissionAndOpen()
+                1 -> selectImageFromGalleryResult.launch("image/*")
+            }
+        }.show()
     }
 
     private fun checkCameraPermissionAndOpen() {
@@ -168,43 +227,27 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun launchCamera() {
-        // Create a temporary file to store the image
         val tmpFile = File.createTempFile("tmp_image_file", ".png", cacheDir).apply {
             createNewFile()
             deleteOnExit()
         }
-
-        // Get the URI using the FileProvider we set up in Manifest
         imageUri = FileProvider.getUriForFile(applicationContext, "${packageName}.provider", tmpFile)
-
-        // Launch camera
         takePictureResult.launch(imageUri)
     }
 
     private fun showImagePreview(uri: Uri) {
-        // Hide placeholder, show image
         layoutUploadPlaceholder.visibility = View.GONE
         ivProfilePreview.visibility = View.VISIBLE
         ivProfilePreview.setImageURI(uri)
-
-        // Change button text
         btnUploadPhoto.text = "Change Photo"
-    }
-
-    // --- NAVIGATION UI LOGIC ---
-
-    override fun onBackPressed() {
-        if (currentStep > 1) { currentStep--; updateUI(currentStep) } else super.onBackPressed()
     }
 
     private fun updateUI(step: Int) {
         val colorActive = ContextCompat.getColor(this, R.color.primary_green)
         val colorInactive = ContextCompat.getColor(this, R.color.light_gray)
-
         step1Container.visibility = View.GONE
         step2Container.visibility = View.GONE
         step3Container.visibility = View.GONE
-
         when (step) {
             1 -> {
                 step1Container.visibility = View.VISIBLE
@@ -232,13 +275,22 @@ class CreateAccountActivity : AppCompatActivity() {
 
     private fun validateStep1(): Boolean {
         val firstName = findViewById<TextInputEditText>(R.id.et_first_name)
+        val lastName = findViewById<TextInputEditText>(R.id.et_last_name)
+        val idNumber = findViewById<TextInputEditText>(R.id.et_id_number)
+        val password = findViewById<TextInputEditText>(R.id.et_password)
         if (firstName.text.isNullOrEmpty()) { firstName.error = "Required"; return false }
+        if (lastName.text.isNullOrEmpty()) { lastName.error = "Required"; return false }
+        if (idNumber.text.isNullOrEmpty()) { idNumber.error = "Required"; return false }
+        if (password.text.isNullOrEmpty()) { password.error = "Required"; return false }
         return true
     }
 
     private fun validateStep2(): Boolean {
         val phone = findViewById<TextInputEditText>(R.id.et_phone)
+        val country = spinnerCountry
         if (phone.text.isNullOrEmpty()) { phone.error = "Required"; return false }
+        if (country.text.isNullOrEmpty()) { country.error = "Required"; return false }
         return true
     }
 }
+

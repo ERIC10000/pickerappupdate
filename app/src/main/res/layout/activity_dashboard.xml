@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,46 +8,68 @@
     android:layout_height="match_parent"
     tools:context=".DashboardActivity">
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#F8F9FA">
+        android:background="#F5F7FA">
 
-        <!-- Top Navigation Bar -->
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="16dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:elevation="4dp">
 
-            <ImageButton
-                android:id="@+id/btn_menu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_menu"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Menu"
-                android:scaleType="centerInside"
-                android:tint="@color/text_dark" />
-
-            <View
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dashboard"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark" />
 
-            <ImageButton
+            <FrameLayout
                 android:id="@+id/btn_notifications"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_notification"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Notifications"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_notification_bell"
+                    android:scaleType="fitCenter"
+                    app:tint="@color/text_dark" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardBackgroundColor="#FF3B30"
+                    app:cardElevation="0dp" />
+            </FrameLayout>
+
+            <ImageButton
+                android:id="@+id/btn_logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_logout"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerInside"
-                android:tint="@color/text_dark" />
+                app:tint="#D32F2F"
+                android:contentDescription="Logout" />
         </LinearLayout>
 
         <!-- Scrollable Content -->
@@ -60,29 +83,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="20dp">
+                android:padding="16dp">
 
                 <!-- Profile Card -->
-                <FrameLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="24dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@color/primary_green">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:background="@drawable/gradient_profile_card"
-                        android:padding="16dp"
+                        android:padding="20dp"
                         android:gravity="center_vertical">
 
                         <!-- Profile Image -->
-                        <FrameLayout
+                        <androidx.cardview.widget.CardView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:background="@color/white"
+                            app:cardCornerRadius="35dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardElevation="0dp"
                             android:layout_marginEnd="16dp">
 
                             <ImageView
@@ -101,15 +126,15 @@
                                 android:gravity="center">
 
                                 <ImageView
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
                                     android:src="@drawable/logo"
                                     android:contentDescription="Profile placeholder"
                                     android:scaleType="fitCenter" />
                             </LinearLayout>
-                        </FrameLayout>
+                        </androidx.cardview.widget.CardView>
 
-                        <!-- Profile Info -->
+                        <!-- User Details -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -119,8 +144,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Welcome Back!"
-                                android:textSize="11sp"
+                                android:text="Welcome Back,"
+                                android:textSize="12sp"
                                 android:textColor="#E8F5F0"
                                 android:layout_marginBottom="2dp" />
 
@@ -129,7 +154,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="John Doe"
-                                android:textSize="16sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/white"
                                 android:layout_marginBottom="4dp" />
@@ -141,12 +166,24 @@
                                 android:text="REG123456"
                                 android:textSize="12sp"
                                 android:textColor="#FFD700"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:background="#33000000"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="2dp" />
                         </LinearLayout>
                     </LinearLayout>
-                </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- Info Cards Grid -->
+                <!-- Personal Details Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personal Details"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginBottom="12dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -158,20 +195,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:spacing="12dp"
                         android:layout_marginBottom="12dp">
 
-                        <!-- Full Name Card -->
-                        <FrameLayout
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient_info_card"
-                            android:padding="16dp">
+                            android:layout_marginEnd="6dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0"
+                            app:cardBackgroundColor="@color/white">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:padding="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -181,32 +221,36 @@
                                     android:textSize="11sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_light"
-                                    android:layout_marginBottom="6dp" />
+                                    android:layout_marginBottom="4dp" />
 
                                 <TextView
                                     android:id="@+id/tv_full_name_detail"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="John Doe"
-                                    android:textSize="13sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_dark"
                                     android:maxLines="1"
                                     android:ellipsize="end" />
                             </LinearLayout>
-                        </FrameLayout>
+                        </com.google.android.material.card.MaterialCardView>
 
-                        <!-- ID Number Card -->
-                        <FrameLayout
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient_info_card"
-                            android:padding="16dp">
+                            android:layout_marginStart="6dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0"
+                            app:cardBackgroundColor="@color/white">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:padding="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -216,20 +260,20 @@
                                     android:textSize="11sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_light"
-                                    android:layout_marginBottom="6dp" />
+                                    android:layout_marginBottom="4dp" />
 
                                 <TextView
                                     android:id="@+id/tv_id_number"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="12345678"
-                                    android:textSize="13sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_dark"
                                     android:maxLines="1"
                                     android:ellipsize="end" />
                             </LinearLayout>
-                        </FrameLayout>
+                        </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
 
                     <!-- Row 2: County & Mobile -->
@@ -237,20 +281,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:spacing="12dp"
                         android:layout_marginBottom="12dp">
 
-                        <!-- County Card -->
-                        <FrameLayout
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient_info_card"
-                            android:padding="16dp">
+                            android:layout_marginEnd="6dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0"
+                            app:cardBackgroundColor="@color/white">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:padding="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -260,32 +307,36 @@
                                     android:textSize="11sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_light"
-                                    android:layout_marginBottom="6dp" />
+                                    android:layout_marginBottom="4dp" />
 
                                 <TextView
                                     android:id="@+id/tv_county"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Nairobi"
-                                    android:textSize="13sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_dark"
                                     android:maxLines="1"
                                     android:ellipsize="end" />
                             </LinearLayout>
-                        </FrameLayout>
+                        </com.google.android.material.card.MaterialCardView>
 
-                        <!-- Mobile Card -->
-                        <FrameLayout
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient_info_card"
-                            android:padding="16dp">
+                            android:layout_marginStart="6dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="#E0E0E0"
+                            app:cardBackgroundColor="@color/white">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:padding="16dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -295,33 +346,36 @@
                                     android:textSize="11sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_light"
-                                    android:layout_marginBottom="6dp" />
+                                    android:layout_marginBottom="4dp" />
 
                                 <TextView
                                     android:id="@+id/tv_mobile_number"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="+254712345678"
-                                    android:textSize="13sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_dark"
                                     android:maxLines="1"
                                     android:ellipsize="end" />
                             </LinearLayout>
-                        </FrameLayout>
+                        </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
 
-                    <!-- Row 3: Email (Full Width) -->
-                    <FrameLayout
+                    <!-- Email -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/gradient_info_card"
-                        android:padding="16dp"
-                        android:layout_marginBottom="12dp">
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E0E0E0"
+                        app:cardBackgroundColor="@color/white">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:padding="16dp"
                             android:orientation="vertical">
 
                             <TextView
@@ -331,69 +385,85 @@
                                 android:textSize="11sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_light"
-                                android:layout_marginBottom="6dp" />
+                                android:layout_marginBottom="4dp" />
 
                             <TextView
                                 android:id="@+id/tv_email"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="john@example.com"
-                                android:textSize="13sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_dark"
                                 android:maxLines="1"
                                 android:ellipsize="end" />
                         </LinearLayout>
-                    </FrameLayout>
-
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
 
-        <!-- Action Buttons at Bottom -->
+        <!-- Bottom Navigation -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:spacing="12dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:elevation="16dp">
 
-            <!-- Generate ID Button -->
-            <!-- Sign Up Button (Filled Green) -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/generate_id"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="Generate ID"
+                android:id="@+id/btn_make_contribution"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Make Contribution"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white"
                 app:backgroundTint="@color/primary_green"
                 app:cornerRadius="12dp"
-                app:elevation="0dp" />
+                app:elevation="2dp"
+                android:layout_marginBottom="12dp" />
 
-            <!-- Edit Profile Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_profile"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="Edit Profile"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/primary_green"
-                app:backgroundTint="@android:color/transparent"
-                app:strokeColor="@color/primary_green"
-                app:strokeWidth="2dp"
-                app:cornerRadius="12dp"
-                app:elevation="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/generate_id"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:text="ID Card"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_green"
+                    app:strokeColor="@color/primary_green"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="12dp"
+                    app:elevation="0dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/edit_profile"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:text="Edit Profile"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_green"
+                    app:strokeColor="@color/primary_green"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="12dp"
+                    app:elevation="0dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- Jungle Green Palette -->
     <color name="primary_green">#1B7B3A</color>
     <color name="primary_green_dark">#0F5C28</color>
     <color name="primary_green_light">#43A457</color>
 
-
+    <!-- Secondary Colors -->
     <color name="secondary_orange">#FF9800</color>
     <color name="secondary_orange_dark">#E68900</color>
 
-
+    <!-- UI Colors -->
     <color name="white">#FFFFFF</color>
     <color name="light_gray">#F0F0F0</color>
     <color name="medium_gray">#D0D0D0</color>
@@ -17,12 +17,20 @@
     <color name="text_light">#757575</color>
     <color name="text_lighter">#BDBDBD</color>
 
-
+    <!-- Status Colors -->
     <color name="success_green">#4CAF50</color>
     <color name="error_red">#D32F2F</color>
 
-
+    <!-- Accents -->
     <color name="accent_light">#A5D6A7</color>
     <color name="gradient_start">#0F5C28</color>
     <color name="gradient_end">#1B7B3A</color>
+
+    <!-- Standard Material Colors (Mapped to your palette where possible) -->
+    <color name="purple_200">#A5D6A7</color>
+    <color name="purple_500">#1B7B3A</color>
+    <color name="purple_700">#0F5C28</color>
+    <color name="teal_200">#FF9800</color>
+    <color name="teal_700">#E68900</color>
+    <color name="black">#FF000000</color>
 </resources>

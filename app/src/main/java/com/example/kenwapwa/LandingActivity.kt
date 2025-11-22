@@ -19,7 +19,7 @@ class LandingActivity : AppCompatActivity() {
             insets
         }
 
-        val signupButton = findViewById<MaterialButton>(R.id.btn_signup)
+        val signupButton = findViewById<MaterialButton>(R.id.btn_create_account)
         val signinButton = findViewById<MaterialButton>(R.id.btn_login)
 
 
