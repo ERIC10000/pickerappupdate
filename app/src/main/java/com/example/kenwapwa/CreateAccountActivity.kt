@@ -3,15 +3,20 @@ package com.example.kenwapwa
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +29,6 @@ import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.storage.storage
 import io.github.jan.supabase.storage.upload
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import org.mindrot.jbcrypt.BCrypt
 import java.io.File
 
@@ -70,14 +74,15 @@ class CreateAccountActivity : AppCompatActivity() {
             showImagePreview(it)
         }
     }
+
     private val takePictureResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
         if (isSuccess) {
-            imageUri.let {
-                selectedImageUri = it
-                showImagePreview(it)
-            }
+            // imageUri is initialized in launchCamera() before this is called
+            selectedImageUri = imageUri
+            showImagePreview(imageUri)
         }
     }
+
     private val requestCameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) launchCamera()
         else Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
@@ -90,6 +95,9 @@ class CreateAccountActivity : AppCompatActivity() {
         setupListeners()
         updateUI(1)
         fetchCounties()
+
+        // Setup the clickable links
+        setupTermsAndPrivacyLinks()
     }
 
     private fun initViews() {
@@ -116,6 +124,72 @@ class CreateAccountActivity : AppCompatActivity() {
         btnNext.setOnClickListener { handleNextButton() }
         btnBack.setOnClickListener { if (currentStep > 1) { currentStep--; updateUI(currentStep) } }
         btnBackArrow.setOnClickListener { if (currentStep > 1) { currentStep--; updateUI(currentStep) } else finish() }
+    }
+
+    // Function to handle clickable Terms and Privacy links
+    private fun setupTermsAndPrivacyLinks() {
+        val tvTermsPrivacy = findViewById<TextView>(R.id.tv_terms_privacy)
+        val fullText = "By clicking Complete, you agree to our Terms of Service and Privacy Policy."
+        val spannableString = SpannableString(fullText)
+
+        // Define the Links
+        val termsLink = "https://staging.kenwpwa.co.ke/KENAWPWA_TERMS_AND_CONDITIONS.pdf"
+        val privacyLink = "https://staging.kenwpwa.co.ke/KENAWPWA_PRIVACY_POLICY.pdf"
+
+        // Clickable Span for "Terms of Service"
+        val termsClickable = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                try {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(termsLink))
+                    startActivity(browserIntent)
+                } catch (e: Exception) {
+                    Toast.makeText(this@CreateAccountActivity, "Could not open link", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = true
+                ds.color = ContextCompat.getColor(this@CreateAccountActivity, R.color.primary_green)
+            }
+        }
+
+        // Clickable Span for "Privacy Policy"
+        val privacyClickable = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                try {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyLink))
+                    startActivity(browserIntent)
+                } catch (e: Exception) {
+                    Toast.makeText(this@CreateAccountActivity, "Could not open link", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = true
+                ds.color = ContextCompat.getColor(this@CreateAccountActivity, R.color.primary_green)
+            }
+        }
+
+        // Locate the start and end indices
+        val termsStart = fullText.indexOf("Terms of Service")
+        val termsEnd = termsStart + "Terms of Service".length
+        val privacyStart = fullText.indexOf("Privacy Policy")
+        val privacyEnd = privacyStart + "Privacy Policy".length
+
+        // Apply the spans
+        if (termsStart >= 0) {
+            spannableString.setSpan(termsClickable, termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        if (privacyStart >= 0) {
+            spannableString.setSpan(privacyClickable, privacyStart, privacyEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        // Set the text and enable links
+        tvTermsPrivacy.text = spannableString
+        tvTermsPrivacy.movementMethod = LinkMovementMethod.getInstance()
+        tvTermsPrivacy.highlightColor = Color.TRANSPARENT
     }
 
     private fun handleNextButton() {
@@ -209,13 +283,18 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun showImageSourceDialog() {
-        val options = arrayOf( "Choose from Gallery", "Cancel")
-        AlertDialog.Builder(this).setTitle("Upload Profile Picture").setItems(options) { _, which ->
-            when (which) {
-                0 -> checkCameraPermissionAndOpen()
-                1 -> selectImageFromGalleryResult.launch("image/*")
+        // FIXED: Added "Take Photo" and corrected index mapping
+        val options = arrayOf("Take Photo", "Choose from Gallery", "Cancel")
+        AlertDialog.Builder(this)
+            .setTitle("Upload Profile Picture")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> checkCameraPermissionAndOpen()
+                    1 -> selectImageFromGalleryResult.launch("image/*")
+                    2 -> dialog.dismiss()
+                }
             }
-        }.show()
+            .show()
     }
 
     private fun checkCameraPermissionAndOpen() {
@@ -293,4 +372,3 @@ class CreateAccountActivity : AppCompatActivity() {
         return true
     }
 }
-
